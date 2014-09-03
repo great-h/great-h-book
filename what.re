@@ -12,7 +12,7 @@ GitHubの利用方法を教えてくれる
 
 ===[column] コワーキングスペース
 
-Movin,on
+Movin'on
 
 ===[column] GitHub
 
