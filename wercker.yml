@@ -1,0 +1,16 @@
+box: wercker/rvm
+build:
+  steps:
+    - rvm-use:
+        version: 2.1.0
+    - bundle-install
+    - install-packages:
+        packages: zip
+    - script:
+        name: rake deploy
+        code: rake deploy
+deploy:
+  steps:
+    - script:
+        name: rake deploy:latest
+        code: rake deploy:latest
