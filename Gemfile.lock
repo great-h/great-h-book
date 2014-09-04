@@ -16,6 +16,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rake (10.3.2)
     review (1.3.0)
     slop (3.6.0)
 
@@ -25,4 +26,5 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk
   pry
+  rake
   review
