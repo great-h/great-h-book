@@ -11,6 +11,7 @@ build:
         code: rake deploy
 deploy:
   steps:
+    - bundle-install
     - script:
         name: rake deploy:latest
         code: rake deploy:latest
