@@ -34,9 +34,17 @@ def epub_object_name
 end
 
 desc 'create book'
-task :create do
+task create: :clean do
+  sh "cp -a src/ ."
+  sh "bundle exec review-preproc *.re --replace"
   sh "bundle exec review-epubmaker config.yml"
   sh "bundle exec review-pdfmaker config.yml"
+end
+
+task :clean do
+  sh "rm -f *.re"
+  sh "rm -f *.epub"
+  sh "rm -f *.pdf"
 end
 
 desc 'deploy book'
