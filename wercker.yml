@@ -5,9 +5,15 @@ build:
     - script:
         name: rake deploy
         code: bundle exec rake deploy
+    - script:
+        name: tweet
+        code: bundle exec rake tweet:draft
 deploy:
   steps:
     - bundle-install
     - script:
         name: rake deploy:latest
         code: bundle exec rake deploy:latest
+    - script:
+        name: tweet
+        code: bundle exec rake tweet:latest

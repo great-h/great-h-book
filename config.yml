@@ -7,3 +7,11 @@ toclevel: 2
 toc: 1
 aut: すごい広島
 titlepage: true
+rights: |
+  (C) 2014 すごい広島
+colophon: true
+urnid: http://great-h-book.eiel.info/1.0.0rc/
+history:
+  -
+    - "2014-09-20"
+date: 2014-09-20
