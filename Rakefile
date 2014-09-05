@@ -6,7 +6,7 @@ def revision
 end
 
 def branch
-  @branch ||= `git symbolic-ref HEAD | sed -e 's!refs/heads/'`.chop
+  @branch ||= ENV["WERCKER_GIT_BRANCH"] || `git symbolic-ref HEAD | sed -e 's!refs/heads/!!'`.chop
 end
 
 def book_name
