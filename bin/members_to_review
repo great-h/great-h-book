@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+require 'octokit'
+
+client = Octokit::Client.new(
+  access_token: ENV['GITHUB_ACCESS_TOKEN'],
+  auto_paginate: true,
+)
+members = client.organization_members("great-h")
+
+require 'open-uri'
+require 'fileutils'
+FileUtils.mkdir_p("tmp")
+members.each do |member|
+  user = client.user(member.login)
+  avatar_filename = "avatar-#{user.login}"
+  tmp_filepath = "tmp/#{avatar_filename}.png"
+  filepath = "images/#{avatar_filename}.png"
+  if user.avatar_url
+    unless File.exists? filepath
+      open(tmp_filepath,"w") do |io|
+        io.write(open(user.avatar_url).read)
+      end
+      `convert -geometry 40x40 -density 144 #{tmp_filepath} #{filepath}`
+    end
+  else
+    avatar_filename = nil
+  end
+  puts "=== @<href>{#{user.html_url}, @#{user.login}}"
+  puts ""
+  puts "@<icon>{#{avatar_filename}}"
+  if user.name
+    name_for_tex = user.name.gsub('䑓','\UTF{4453\}')
+    puts "@<raw>{|latex|#{name_for_tex}}" + "@<raw>{|html|#{user.name}}"
+  end
+  puts ""
+  if user.blog && user.blog.length != 0
+    url = user.blog
+    if url.match(/^(?!http:\/\/)/)
+      url = "http://" + url
+    end
+    puts "@<href>{#{url}}"
+    puts ""
+  end
+end

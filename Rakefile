@@ -29,13 +29,13 @@ def bucket
   s3.buckets["great-h-book.eiel.info"]
 end
 
-def epub_object_name
+def object_name_base
   "tmp/#{book_name}-#{revision}"
 end
 
 desc 'create book'
 task create: :clean do
-  sh "cp -a src/ ."
+  sh "cp -a src/* ."
   sh "bundle exec review-preproc *.re --replace"
   sh "bundle exec review-epubmaker config.yml"
   sh "bundle exec review-pdfmaker config.yml"
@@ -44,15 +44,17 @@ end
 task :clean do
   sh "rm -f *.re"
   sh "rm -f *.epub"
-  sh "rm -f *.pdf"
+  sh "rm -rf *pdf"
+  sh "rm -rf tmp"
 end
 
 desc 'deploy book'
 task deploy: :create do
   types.each do |type|
-    object = bucket.objects[epub_object_name]
+    object_name = "#{object_name_base}.#{type}"
+    object = bucket.objects[object_name]
     if result = object.exists? rescue false
-      $stderr.puts "areaday objet: #{epub_object_name}"
+      $stderr.puts "areaday objet: #{object_name}"
     else
       object.write(open("#{book_name}.#{type}"), acl: :public_read)
     end
@@ -69,7 +71,8 @@ namespace :deploy do
   desc 'deploy latest'
   task :latest do
     types.each do |type|
-      object = bucket.objects[epub_object_name]
+      object_name = "#{object_name_base}.#{type}"
+      object = bucket.objects[object_name]
       name = "#{book_name}.#{type}"
       object.copy_to name
       bucket.objects[name].acl = :public_read
