@@ -1,0 +1,113 @@
+#!/usr/bin/env ruby
+require 'octokit'
+require 'fileutils'
+
+def client
+  @client ||= Octokit::Client.new
+end
+
+def repo
+  @repo ||= "great-h/great-h.github.io"
+end
+
+def destination_dir(file)
+  @destination_dir ||= "data".tap do |dir|
+    FileUtils.mkdir_p dir
+  end
+  "#{@destination_dir}/#{file}"
+end
+
+def write_file(filename,&block)
+  open(destination_dir(filename),"w",&block)
+end
+
+def to_time_str(time)
+  Time.at(time).strftime("%Y-%m-%d")
+end
+
+def code_frequency
+  write_file("code_frequency_add.dat") do |add_io|
+    write_file("code_frequency_del.dat") do |del_io|
+      stats = nil
+      5.times do
+        stats = client.code_frequency_stats(repo)
+        break if stats
+        sleep 1
+      end
+      raise "APIが値を返しませんでした" if stats.nil?
+
+      stats.each do |time,add,del|
+        time = Time.at(time)
+        time_str = time.strftime("%Y-%m-%d")
+        add_io.puts "#{time_str} #{add}"
+        del_io.puts "#{time_str} #{del}"
+      end
+    end
+  end
+end
+
+def commit_activity
+  activity = nil
+  5.times do
+    activity = client.commit_activity_stats(repo)
+    break if activity
+    sleep 1
+  end
+  raise "APIが値を返しませんでした" if activity.nil?
+
+  write_file("commit_activity.dat") do |io|
+    activity.each do |attr|
+      time = to_time_str(attr.week)
+      io.puts "#{time} #{attr.total}"
+    end
+  end
+
+  write_file("commit_activity_report.dat") do |io|
+    length = activity.length
+    weeks = activity[0..-2].map(&:total)
+    average = weeks.reduce(0) { |acc,n| acc + n }.to_f / length
+    io.puts "最小\t#{weeks.min}"
+    io.puts "最大\t#{weeks.max}"
+    io.puts "平均\t%.2f" % average
+  end
+end
+
+def contributors
+  write_file("contributors.dat") do |io|
+    stats = nil
+    5.times do
+      stats = client.contributors_stats(repo)
+      break if stats
+      sleep 1
+    end
+    raise "APIが値を返しませんでした" if stats.nil?
+
+    stats.sort_by { |c|
+      -c.total
+    }.each_with_index { |c,i|
+      io.puts(" #{i+1}. %3d %s" % [c.total, c.author.login])
+    }
+  end
+end
+
+def punch_card
+  write_file("punch_card.dat") do |io|
+    stats = nil
+    5.times do
+      stats = client.punch_card_stats(repo)
+      break if stats
+      sleep 1
+    end
+    raise "APIが値を返しませんでした" if stats.nil?
+
+    stats.each { |punch|
+      wday, hour, number = *punch
+      io.puts "2014-08-#{17+wday} #{hour} #{number}"
+    }
+  end
+end
+
+code_frequency
+commit_activity
+contributors
+punch_card

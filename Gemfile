@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'review'
+gem 'review', git: 'git://github.com/eiel/review', branch: "add-image-entry"
 gem 'aws-sdk'
 gem 'pry'
 gem 'rake'

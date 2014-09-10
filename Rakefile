@@ -62,13 +62,28 @@ def object_name_base
   "tmp/#{book_name}-#{revision}"
 end
 
-desc 'create book'
-task create: :clean do
+task :copy do
   sh "cp -a src/* ."
-  sh "bundle exec review-preproc *.re --replace"
-  sh "bundle exec review-epubmaker config.yml"
-  sh "bundle exec review-pdfmaker config.yml"
 end
+
+task preprocess: :copy do
+  sh "bundle exec bin/get_statics"
+  sh "bundle exec review-preproc *.re --replace"
+end
+
+desc 'create book'
+task create: [:'create:epub', :'create:pdf']
+
+namespace :create do
+  task epub: :preprocess do
+    sh "bundle exec review-epubmaker config.yml"
+  end
+
+  task pdf: :preprocess do
+    sh "bundle exec review-pdfmaker config.yml"
+  end
+end
+
 
 task :clean do
   sh "rm -f *.re"
@@ -78,7 +93,7 @@ task :clean do
 end
 
 desc 'deploy book'
-task deploy: :create do
+task deploy: [:clean, :create] do
   types.each do |type|
     object_name = "#{object_name_base}.#{type}"
     object = bucket.objects[object_name]
