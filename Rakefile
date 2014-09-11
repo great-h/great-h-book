@@ -100,7 +100,14 @@ task deploy: [:clean, :create] do
     if result = object.exists? rescue false
       $stderr.puts "areaday objet: #{object_name}"
     else
-      object.write(open("#{book_name}.#{type}"), acl: :public_read)
+      options = { acl: :public_read }
+      case type
+      when "epub"
+        options[:content_type] = 'application/epub+zip'
+      when "pdf"
+        options[:content_type] = 'application/pdf'
+      end
+      object.write(open("#{book_name}.#{type}"), options)
     end
   end
 end
