@@ -1,13 +1,71 @@
 = すごい広島の秘密
 
-Doorkeeperの情報から自動生成される参加者情報
+すごい広島に関する雑多なことを紹介します。
 
-マージルール
+== 参加者情報の生成
 
-暗黙のルール
-自動プルリクエスト
-放置マージ
+すごい広島はDoorkeeperというウェブサービスで事前申し込みを受付います。
+このウェブサービスで申し込みをしておくと、すごい広島のイベントページに自動的に参加者情報が記述されるようになっています。
 
-API
+この自動の生成は毎週水曜日の17時ごろに行なわれます。
 
-hiroshimarb.hackage
+DoorkeeperではTwitter, Facebook, GitHub, Linked inのアカウントで認証することができます。
+すごい広島のサイトにはではGitHub, Twitter, Facebook, Linked inの優先順位で利用する情報を選択します。
+
+GitHubで認証していれば、GitHubの表示名を表示し、プロフィールへのリンクになります。
+GitHubで認証していなければ、Twitterの情報を…となります。
+
+このルールに沿わずに自分好みの設定をする方法も用意してあります。
+
+users.ymlが用意されていて、このファイルに情報を記述することで好みの設定をすることができます。
+現在の設定はこのようになっています。
+
+//emlist{
+eiel:
+  name: eiel
+  url: http://eiel.info/
+Torokun:
+  name: Toro_kun
+  url: https://twitter.com/Toro_kun
+Nyoho:
+  name: Nyoho
+  url: http://nyoho.jp/
+//}
+
+== すごい広島のAPI
+
+すごい広島にはWebAPIが提供されています。
+
+ * GET http://great-h.github.io/event.json
+
+このAPIは次回のイベント番号と日時、開催場所を返します。
+
+//emlist{
+{"no":70,"datetime":"2014-09-17T18:00:00+09:00","place":"Movin'on"}
+//}
+
+== すごい広島コマンドラインツール
+
+すごい広島のコマンドラインツールも開発されています。
+2014年9月現在の時点ではMac OS Xのみのサポートとなっています。
+
+開発中のためバイナリ配布はまだされていません。
+ソースコードを取得してコンパイルする必要があります。う
+すごい広島のコマンドラインツールのコンパイルにはHaskell Platform(@<href>{https://www.haskell.org/platform/})のインストールが必要です。
+Haskell Platformをインストールしている状態で、
+
+//emlist{
+$ git clone git@github.com:great-h/great-h.git
+$ cd great-h
+$ cabal install great-h
+//}
+
+とすることでコマンドラインツールをインストールすることができます。
+
+現在はすごい広島のサイトをブラウザで表示するopenサブコマンドのみ実装されています。
+
+//emlist{
+$ great-h open
+//}
+
+@<comment>{あとで書く マージルール }
