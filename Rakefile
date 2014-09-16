@@ -68,6 +68,7 @@ end
 
 task preprocess: :copy do
   sh "bundle exec bin/get_statics"
+  sh "bundle exec bin/top-commit"
   sh "bundle exec review-preproc *.re --replace"
 end
 
