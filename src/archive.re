@@ -25,7 +25,7 @@
 このウェブサイトはCode For Kanazawaという団体が作成しています。
 
 //quote{
-@<strong>コードで、世界をHappyに。</storng>
+@<strong>{コードで、世界をHappyに。}
 
 Code for Kanazawa（CfK）は、ITやデザインの力で、私たち市民の生活が今よりも良くなることを目指します。
 私たちは地域の問題を見つけ、シンプルで具体的な解決方法を開発します。
