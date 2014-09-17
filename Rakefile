@@ -66,21 +66,22 @@ task :copy do
   sh "cp -a src/* ."
 end
 
-task preprocess: :copy do
+task :preprocess do
   sh "bundle exec bin/get_statics"
   sh "bundle exec bin/top-commit"
   sh "bundle exec review-preproc *.re --replace"
 end
 
 desc 'create book'
-task create: [:'create:epub', :'create:pdf']
+task create: [:copy, :preprocess, :'create:epub', :'create:pdf']
 
 namespace :create do
-  task epub: :preprocess do
+  task :epub do
     sh "bundle exec review-epubmaker config.yml"
   end
 
-  task pdf: :preprocess do
+  task :pdf do
+    sh "rm -rf *pdf"
     sh "bundle exec review-pdfmaker config.yml"
   end
 end
@@ -89,7 +90,6 @@ end
 task :clean do
   sh "rm -f *.re"
   sh "rm -f *.epub"
-  sh "rm -rf *pdf"
   sh "rm -rf tmp"
 end
 
