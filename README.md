@@ -17,6 +17,13 @@
 
 にファイルが生成されます。
 
+# Macでコンパイルする方法
+
+```
+$ brew install gnuplot --pdf
+$ brew cask install mactex
+```
+
 # リンク
 
 * [すごい広島](http://great-h.github.io/)
