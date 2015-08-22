@@ -159,3 +159,13 @@ Re:VIEWという形式で書かれているため、実際に書籍とした形�
 * すごいHiroshimaの本置場 @<href>{http://great-h-book.eiel.info/}
 
 すごい広島では、新しいことに挑戦し、それを目に見える形に残し続けています。
+
+== Code for Hiroshima
+
+すごい広島の成果としては含まれないかもしれませんが、連動しているコミュニティに @<href>{http://code4hiroshima.org Code for Hiroshima}があります。
+
+このコミュニティは@<href>{http://code4japan.org/ Code for Japan}のBirgade事業に参加しているシビックテック(市民のためのテクノロジー)を提供するコミュニティです。
+プログラミングのチカラを市政や、市民の生活に役立てることを考えています。
+
+5374.jp For 広島を提供していることから想像がつくかもしれませんが、
+すごい広島では、Code for Hiroshimaへの技術協力を行っています。
