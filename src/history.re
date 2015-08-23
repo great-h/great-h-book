@@ -71,4 +71,4 @@ C++に追加されている機能の多くにHaskellの影響を受けたもの�
 すごい広島とHaskellの関係は名前以外にあまりないように思うかもしれませんが、すごい広島を運営するための便利なツールの一部はHaskellで制作されています。
 これらのツーフはすごい広島のGitHubで公開されています。よかったら覗いてみてください。
 
- * @<href>{https://github.com/great-h/auto_participant great/auto_participant}
+ * @<href>{https://github.com/great-h/auto_participant, great/auto_participant}
